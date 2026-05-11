@@ -21,10 +21,20 @@ TypeScript Node/Express backend for portfolio content.
 
 - `GET /api/health`
 - `GET /api/profile`
-- `GET /api/skills`
+- `GET /api/projects`
+- `GET /api/stack`
 - `GET /api/experience`
 - `GET /api/apps`
 - `GET /api/posts?limit=3`
+
+Full contract: [docs/api-contract.md](./docs/api-contract.md)
+
+## Deployment
+
+**Production:** Railway — https://personal-portfolio-services-production.up.railway.app
+**Database:** Railway MongoDB plugin (managed); seed via `npm run seed` against the prod `MONGO_URI`
+**Frontend consumer:** [portfolio-web](https://github.com/beckinfonet/personal-portfolio-web) (Next.js 15, RSC fetches via `NEXT_PUBLIC_API_BASE_URL`)
+**Smoke gate:** `PROD_API_URL=https://personal-portfolio-services-production.up.railway.app npm run smoke`
 
 ## Notes
 
