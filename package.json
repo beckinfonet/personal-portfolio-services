@@ -6,7 +6,9 @@
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
     "build": "tsc -p tsconfig.json",
     "start": "node dist/src/server.js",
-    "test": "jest --runInBand --watchman=false"
+    "test": "jest --runInBand --watchman=false",
+    "seed": "ts-node-dev --transpile-only src/scripts/seed.ts",
+    "smoke": "node scripts/check-backend.mjs"
   },
   "keywords": [],
   "author": "",
