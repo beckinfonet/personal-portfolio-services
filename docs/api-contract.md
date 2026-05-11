@@ -139,4 +139,25 @@ type Response = Writing[];   // sorted by date desc, capped at ?limit
 
 ## GET /api/projects
 
-_filled by Wave 07_
+**Response 200 — type from portfolio-web/lib/types.ts Project[]:**
+```ts
+interface Project {
+  name: string;
+  year: string;
+  status: string;     // "shipped" | "active" | "archived"
+  summary: string;
+  tech: string[];
+  role: string;
+  link: string;       // https URL
+}
+
+type Response = Project[];   // sorted by year desc
+```
+
+**Response 503:** `{ error: string }`.
+
+**Frontend cache:** `next: { revalidate: 300 }`.
+
+**Example payload:** see `src/seed/projects.json`.
+
+**Note:** Phase 6 Wave 07 added this endpoint (BACKEND-01). New `Project` model + `getProjects` controller + route line; mirror frontend constant in portfolio-web/lib/portfolio-data.ts.

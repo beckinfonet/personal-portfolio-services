@@ -1,4 +1,4 @@
-import { AppDto, ExperienceDto, PostDto, ProfileDto, StackCategoryDto } from '../types/content';
+import { AppDto, ExperienceDto, PostDto, ProfileDto, ProjectDto, StackCategoryDto } from '../types/content';
 
 export const placeholderProfile: ProfileDto = {
   name: 'Bakytbek Tatibekov',
@@ -62,5 +62,17 @@ export const placeholderPosts: PostDto[] = [
     date: '2025-12-01',
     readTime: '7 min read',
     link: 'https://github.com/beckinfonet'
+  }
+];
+
+export const placeholderProjects: ProjectDto[] = [
+  {
+    name: 'Terminal Portfolio',
+    year: '2026',
+    status: 'shipped',
+    summary: 'Brownfield redesign of this site into a terminal/IDE shell with seven RSC views.',
+    tech: ['Next.js', 'React', 'TypeScript'],
+    role: 'lead',
+    link: 'https://github.com/beckinfonet/portfolio-web'
   }
 ];

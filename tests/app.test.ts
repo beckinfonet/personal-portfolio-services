@@ -138,4 +138,26 @@ describe('API routes', () => {
       expect(response.body.length).toBeLessThanOrEqual(1);
     }
   });
+
+  it('GET /api/projects returns Project[] shape or 503 when DB not ready', async () => {
+    const response = await request(app).get('/api/projects');
+    expect([200, 503]).toContain(response.status);
+    if (response.status === 200) {
+      expect(Array.isArray(response.body)).toBe(true);
+      expect(response.body.length).toBeGreaterThan(0);
+      expect(response.body[0]).toEqual(
+        expect.objectContaining({
+          name: expect.any(String),
+          year: expect.any(String),
+          status: expect.any(String),
+          summary: expect.any(String),
+          tech: expect.any(Array),
+          role: expect.any(String),
+          link: expect.any(String)
+        })
+      );
+      expect(response.body[0]._id).toBeUndefined();
+      expect(response.body[0].link).toMatch(/^https?:\/\//);
+    }
+  });
 });

@@ -51,3 +51,14 @@ export type PostDto = {
   readTime: string;   // "5 min read"
   link: string;       // https URL to full post
 };
+
+// Mirror of portfolio-web/lib/types.ts Project (paired-commit / D-19).
+export type ProjectDto = {
+  name: string;
+  year: string;
+  status: string;     // "shipped" | "active" | "archived"
+  summary: string;
+  tech: string[];
+  role: string;
+  link: string;       // https URL
+};

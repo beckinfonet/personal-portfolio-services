@@ -7,6 +7,7 @@ import { App } from '../models/App';
 import { Experience } from '../models/Experience';
 import { Post } from '../models/Post';
 import { Profile } from '../models/Profile';
+import { Project } from '../models/Project';
 import { Stack } from '../models/Stack';
 
 // CommonJS module target: use __dirname (Rule-3 deviation from plan's
@@ -87,18 +88,29 @@ async function seed(): Promise<void> {
   }
   console.log(`seed: ${posts.length} posts upserted`);
 
-  // Wave 07 inserts projects upsert here.
+  // Projects — array collection, upsert by name (unique).
+  const projects = await load<Array<{ name: string }>>('projects.json');
+  for (const entry of projects) {
+    await Project.findOneAndUpdate(
+      { name: entry.name },
+      entry,
+      { upsert: true, new: true, setDefaultsOnInsert: true }
+    );
+  }
+  console.log(`seed: ${projects.length} projects upserted`);
 
   const profileCount = await Profile.countDocuments();
   const stackCount = await Stack.countDocuments();
   const expCount = await Experience.countDocuments();
   const appsCount = await App.countDocuments();
   const postCount = await Post.countDocuments();
+  const projectCount = await Project.countDocuments();
   console.log(`seed: final profile count = ${profileCount}`);
   console.log(`seed: final stack count = ${stackCount}`);
   console.log(`seed: final experience count = ${expCount}`);
   console.log(`seed: final apps count = ${appsCount}`);
   console.log(`seed: final post count = ${postCount}`);
+  console.log(`seed: final project count = ${projectCount}`);
   console.log('seed: complete');
   await mongoose.disconnect();
 }
