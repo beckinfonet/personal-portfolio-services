@@ -1,9 +1,20 @@
+// Mirror of portfolio-web/lib/types.ts Profile (paired-commit / D-19).
 export type ProfileDto = {
-  fullName: string;
-  title: string;
-  bio: string;
+  name: string;
+  shortName: string;
+  initials: string;
+  role: string;
   location: string;
   email: string;
+  resumeUrl: string;
+  bio: { short: string; long: string[] };
+  highlights: Array<{ value: string; label: string }>;
+  socials: Array<{
+    label: string;
+    handle: string;
+    url: string;
+    kind: 'github' | 'linkedin' | 'mastodon' | 'bluesky' | 'x' | 'email' | 'other';
+  }>;
 };
 
 export type SkillDto = {

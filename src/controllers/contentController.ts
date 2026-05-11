@@ -18,16 +18,24 @@ export const getHealth = (_req: Request, res: Response): void => {
 };
 
 export const getProfile = async (_req: Request, res: Response): Promise<void> => {
+  // Pitfall 8 / RESEARCH Open Question disposition: return 503 when Mongo isn't ready;
+  // portfolio-web/lib/api.ts:30 converts non-2xx to silent fallback (DATA-04 / D-02).
   if (mongoose.connection.readyState !== 1) {
-    res.status(200).json(placeholderProfile);
+    res.status(503).json({ error: 'service warming' });
     return;
   }
-
   try {
-    const profile = await Profile.findOne().lean();
-    res.status(200).json(profile ?? placeholderProfile);
+    const doc = await Profile.findOne().lean();
+    if (!doc) {
+      res.status(503).json({ error: 'profile not seeded' });
+      return;
+    }
+    // Pitfall 1 / RESEARCH §Code Examples: strip Mongoose-injected fields.
+    const { _id, __v, createdAt, updatedAt, ...clean } = doc as Record<string, unknown>;
+    void _id; void __v; void createdAt; void updatedAt;
+    res.status(200).json(clean);
   } catch {
-    res.status(200).json(placeholderProfile);
+    res.status(503).json({ error: 'fetch failed' });
   }
 };
 

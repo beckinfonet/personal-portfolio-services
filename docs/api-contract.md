@@ -16,7 +16,32 @@ _filled by Wave 01 (this plan)_
 
 ## GET /api/profile
 
-_filled by Wave 02_
+**Response 200 — type from portfolio-web/lib/types.ts Profile:**
+```ts
+interface Profile {
+  name: string;
+  shortName: string;
+  initials: string;
+  role: string;
+  location: string;
+  email: string;
+  resumeUrl: string;
+  bio: { short: string; long: string[] };
+  highlights: Array<{ value: string; label: string }>;
+  socials: Array<{
+    label: string;
+    handle: string;
+    url: string;
+    kind: "github" | "linkedin" | "mastodon" | "bluesky" | "x" | "email" | "other";
+  }>;
+}
+```
+
+**Response 503:** `{ error: string }` — Mongo connection not ready or document not seeded. Frontend treats as fallback trigger.
+
+**Frontend cache:** `next: { revalidate: 300 }` (5-min ISR).
+
+**Example payload:** see `src/seed/profile.json`.
 
 ## GET /api/stack
 

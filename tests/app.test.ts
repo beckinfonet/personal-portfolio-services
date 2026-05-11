@@ -23,4 +23,31 @@ describe('API routes', () => {
       })
     );
   });
+
+  it('GET /api/profile returns Profile shape or 503 when DB not ready', async () => {
+    const response = await request(app).get('/api/profile');
+    expect([200, 503]).toContain(response.status);
+    if (response.status === 200) {
+      expect(response.body).toEqual(
+        expect.objectContaining({
+          name: expect.any(String),
+          shortName: expect.any(String),
+          initials: expect.any(String),
+          role: expect.any(String),
+          location: expect.any(String),
+          email: expect.any(String),
+          resumeUrl: expect.any(String),
+          bio: expect.objectContaining({
+            short: expect.any(String),
+            long: expect.any(Array)
+          }),
+          highlights: expect.any(Array),
+          socials: expect.any(Array)
+        })
+      );
+      // Pitfall 1: no Mongoose ObjectId leak in any sub-doc.
+      expect(response.body._id).toBeUndefined();
+      expect(response.body.__v).toBeUndefined();
+    }
+  });
 });
