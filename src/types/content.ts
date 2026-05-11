@@ -31,11 +31,15 @@ export type ExperienceDto = {
   summary: string;
 };
 
+// Mirror of portfolio-web/lib/types.ts ShippedApp (paired-commit / D-19).
 export type AppDto = {
   name: string;
-  description: string;
-  stack: string[];
-  url: string;
+  platforms: Array<'ios' | 'android'>;
+  appStoreUrl?: string;       // required when platforms includes 'ios'
+  googlePlayUrl?: string;     // required when platforms includes 'android'
+  role: string;
+  year: string;
+  summary?: string;
 };
 
 export type PostDto = {

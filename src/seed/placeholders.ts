@@ -44,10 +44,13 @@ export const placeholderExperience: ExperienceDto[] = [
 
 export const placeholderApps: AppDto[] = [
   {
-    name: 'Portfolio Web',
-    description: 'Personal portfolio website built with modern frontend tooling.',
-    stack: ['React', 'TypeScript', 'Vite'],
-    url: 'https://github.com/beckinfonet/portfolio-web'
+    name: 'Demo App',
+    platforms: ['ios', 'android'],
+    appStoreUrl: 'https://apps.apple.com/us/app/demo/id000000000',
+    googlePlayUrl: 'https://play.google.com/store/apps/details?id=com.demo.app',
+    role: 'lead',
+    year: '2024',
+    summary: 'Fallback when Mongo is unseeded. Real apps live in src/seed/apps.json.'
   }
 ];
 

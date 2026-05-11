@@ -3,6 +3,7 @@ import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import mongoose from 'mongoose';
 import { connectToDatabase } from '../config/database';
+import { App } from '../models/App';
 import { Experience } from '../models/Experience';
 import { Profile } from '../models/Profile';
 import { Stack } from '../models/Stack';
@@ -63,16 +64,28 @@ async function seed(): Promise<void> {
   }
   console.log(`seed: ${experience.length} experience entries upserted`);
 
-  // Wave 05 inserts apps upsert here.
+  // Apps — array collection, upsert by name (unique).
+  const apps = await load<Array<{ name: string }>>('apps.json');
+  for (const entry of apps) {
+    await App.findOneAndUpdate(
+      { name: entry.name },
+      entry,
+      { upsert: true, new: true, setDefaultsOnInsert: true }
+    );
+  }
+  console.log(`seed: ${apps.length} apps upserted`);
+
   // Wave 06 inserts posts upsert here.
   // Wave 07 inserts projects upsert here.
 
   const profileCount = await Profile.countDocuments();
   const stackCount = await Stack.countDocuments();
   const expCount = await Experience.countDocuments();
+  const appsCount = await App.countDocuments();
   console.log(`seed: final profile count = ${profileCount}`);
   console.log(`seed: final stack count = ${stackCount}`);
   console.log(`seed: final experience count = ${expCount}`);
+  console.log(`seed: final apps count = ${appsCount}`);
   console.log('seed: complete');
   await mongoose.disconnect();
 }

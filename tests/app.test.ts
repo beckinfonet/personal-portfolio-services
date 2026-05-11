@@ -73,4 +73,37 @@ describe('API routes', () => {
       expect(response.body[0].highlights).toBeUndefined();  // old shape gone
     }
   });
+
+  it('GET /api/apps returns ShippedApp[] shape or 503 when DB not ready', async () => {
+    const response = await request(app).get('/api/apps');
+    expect([200, 503]).toContain(response.status);
+    if (response.status === 200) {
+      expect(Array.isArray(response.body)).toBe(true);
+      expect(response.body.length).toBeGreaterThan(0);
+      expect(response.body[0]).toEqual(
+        expect.objectContaining({
+          name: expect.any(String),
+          platforms: expect.any(Array),
+          role: expect.any(String),
+          year: expect.any(String)
+        })
+      );
+      // platforms entries must be 'ios' | 'android'
+      for (const p of response.body[0].platforms) {
+        expect(['ios', 'android']).toContain(p);
+      }
+      // Pitfall 5: at least one store URL must be present when the app is on that platform
+      if (response.body[0].platforms.includes('ios')) {
+        expect(response.body[0].appStoreUrl).toMatch(/^https?:\/\//);
+      }
+      if (response.body[0].platforms.includes('android')) {
+        expect(response.body[0].googlePlayUrl).toMatch(/^https?:\/\//);
+      }
+      // No legacy keys
+      expect(response.body[0].description).toBeUndefined();
+      expect(response.body[0].stack).toBeUndefined();
+      expect(response.body[0].url).toBeUndefined();
+      expect(response.body[0]._id).toBeUndefined();
+    }
+  });
 });

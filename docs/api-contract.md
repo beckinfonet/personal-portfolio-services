@@ -87,7 +87,28 @@ type Response = Experience[];
 
 ## GET /api/apps
 
-_filled by Wave 05_
+**Response 200 — type from portfolio-web/lib/types.ts ShippedApp[]:**
+```ts
+interface ShippedApp {
+  name: string;
+  platforms: Array<"ios" | "android">;
+  appStoreUrl?: string;       // present when "ios" in platforms (Pitfall 5: canonical HTTPS form)
+  googlePlayUrl?: string;     // present when "android" in platforms
+  role: string;
+  year: string;
+  summary?: string;
+}
+
+type Response = ShippedApp[];   // sorted by year desc
+```
+
+**Response 503:** `{ error: string }` — Mongo not ready or fetch failed.
+
+**Frontend cache:** `next: { revalidate: 300 }`.
+
+**Example payload:** see `src/seed/apps.json`.
+
+**Note:** Phase 6 Wave 05 dropped the legacy `description` / `stack[]` / `url` fields. Store URLs use canonical HTTPS form (`https://apps.apple.com/...`, `https://play.google.com/store/apps/details?id=...`) — works on both iOS and Android via universal/app links + web fallback (Pitfall 5). Pre-existing Mongo docs in the old shape will fail the new schema's `strict: 'throw'` and must be re-seeded.
 
 ## GET /api/posts
 
