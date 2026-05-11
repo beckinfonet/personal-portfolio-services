@@ -7,6 +7,7 @@ export type ProfileDto = {
   location: string;
   email: string;
   resumeUrl: string;
+  resumeDocxUrl?: string;
   bio: { short: string; long: string[] };
   highlights: Array<{ value: string; label: string }>;
   socials: Array<{

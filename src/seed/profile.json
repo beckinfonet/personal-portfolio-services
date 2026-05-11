@@ -5,7 +5,8 @@
   "role": "Sr. Software Engineer",
   "location": "Remote — open globally",
   "email": "beckprograms@gmail.com",
-  "resumeUrl": "/resume.pdf",
+  "resumeUrl": "/Bakytbek_Tatibekov_Resume.pdf",
+  "resumeDocxUrl": "/Bakytbek_Tatibekov_Resume.docx",
   "bio": {
     "short": "Senior software engineer focused on developer tools, infrastructure, and TypeScript-first web apps.",
     "long": [
@@ -15,7 +16,7 @@
   },
   "highlights": [
     { "value": "12+", "label": "years engineering" },
-    { "value": "4",   "label": "apps shipped" },
+    { "value": "2",   "label": "apps shipped" },
     { "value": "OSS", "label": "open-source contributor" }
   ],
   "socials": [

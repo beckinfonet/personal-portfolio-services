@@ -39,6 +39,7 @@ const profileSchema = new Schema(
     location:  { type: String, required: true },
     email:     { type: String, required: true },
     resumeUrl: { type: String, required: true },
+    resumeDocxUrl: { type: String, required: false, default: '' },
     bio:        { type: bioSchema, required: true },
     highlights: { type: [highlightSchema], default: [] },
     socials:    { type: [socialSchema], default: [] }
