@@ -59,24 +59,8 @@ export const placeholderPosts: PostDto[] = [
     title: 'Designing APIs That Age Well',
     slug: 'designing-apis-that-age-well',
     excerpt: 'A practical approach to stable API contracts over time.',
-    publishedAt: '2025-12-01'
-  },
-  {
-    title: 'Type-Safe Backend Patterns',
-    slug: 'type-safe-backend-patterns',
-    excerpt: 'Patterns that improve confidence and speed in Node services.',
-    publishedAt: '2025-10-15'
-  },
-  {
-    title: 'Testing Express Controllers',
-    slug: 'testing-express-controllers',
-    excerpt: 'How to keep tests focused on behavior and contract shape.',
-    publishedAt: '2025-08-03'
-  },
-  {
-    title: 'Pragmatic Mongo Modeling',
-    slug: 'pragmatic-mongo-modeling',
-    excerpt: 'Schema choices that keep data flexible without chaos.',
-    publishedAt: '2025-06-21'
+    date: '2025-12-01',
+    readTime: '7 min read',
+    link: 'https://github.com/beckinfonet'
   }
 ];

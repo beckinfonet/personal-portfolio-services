@@ -106,21 +106,22 @@ export const getPosts = async (req: Request, res: Response): Promise<void> => {
   const limit = Number(req.query.limit ?? 3);
   const queryLimit = Number.isFinite(limit) && limit > 0 ? limit : 3;
 
+  // Pitfall 8 / RESEARCH Open Question disposition: return 503 when Mongo isn't ready;
+  // portfolio-web/lib/api.ts:30 converts non-2xx to silent fallback (DATA-04 / D-02).
   if (mongoose.connection.readyState !== 1) {
-    res.status(200).json(placeholderPosts.slice(0, queryLimit));
+    res.status(503).json({ error: 'service warming' });
     return;
   }
-
   try {
-    const posts = await Post.find().sort({ publishedAt: -1 }).limit(queryLimit).lean();
-    if (posts.length > 0) {
-      res.status(200).json(posts);
-      return;
-    }
+    const docs = await Post.find().sort({ date: -1 }).limit(queryLimit).lean();
+    // Pitfall 1 / RESEARCH §Code Examples: strip Mongoose-injected fields per entry.
+    const clean = docs.map((d) => {
+      const { _id, __v, createdAt, updatedAt, ...rest } = d as Record<string, unknown>;
+      void _id; void __v; void createdAt; void updatedAt;
+      return rest;
+    });
+    res.status(200).json(clean.length > 0 ? clean : placeholderPosts.slice(0, queryLimit));
   } catch {
-    res.status(200).json(placeholderPosts.slice(0, queryLimit));
-    return;
+    res.status(503).json({ error: 'fetch failed' });
   }
-
-  res.status(200).json(placeholderPosts.slice(0, queryLimit));
 };

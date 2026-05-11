@@ -5,6 +5,7 @@ import mongoose from 'mongoose';
 import { connectToDatabase } from '../config/database';
 import { App } from '../models/App';
 import { Experience } from '../models/Experience';
+import { Post } from '../models/Post';
 import { Profile } from '../models/Profile';
 import { Stack } from '../models/Stack';
 
@@ -75,17 +76,29 @@ async function seed(): Promise<void> {
   }
   console.log(`seed: ${apps.length} apps upserted`);
 
-  // Wave 06 inserts posts upsert here.
+  // Posts — array collection, upsert by slug (stable key).
+  const posts = await load<Array<{ slug: string }>>('posts.json');
+  for (const entry of posts) {
+    await Post.findOneAndUpdate(
+      { slug: entry.slug },
+      entry,
+      { upsert: true, new: true, setDefaultsOnInsert: true }
+    );
+  }
+  console.log(`seed: ${posts.length} posts upserted`);
+
   // Wave 07 inserts projects upsert here.
 
   const profileCount = await Profile.countDocuments();
   const stackCount = await Stack.countDocuments();
   const expCount = await Experience.countDocuments();
   const appsCount = await App.countDocuments();
+  const postCount = await Post.countDocuments();
   console.log(`seed: final profile count = ${profileCount}`);
   console.log(`seed: final stack count = ${stackCount}`);
   console.log(`seed: final experience count = ${expCount}`);
   console.log(`seed: final apps count = ${appsCount}`);
+  console.log(`seed: final post count = ${postCount}`);
   console.log('seed: complete');
   await mongoose.disconnect();
 }

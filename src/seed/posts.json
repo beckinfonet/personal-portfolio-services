@@ -1,0 +1,10 @@
+[
+  {
+    "title": "RSC Discipline: Keeping the Persistent Shell Pure",
+    "slug": "rsc-discipline-persistent-shell",
+    "excerpt": "Building a terminal-aesthetic portfolio in Next.js 15 where only four client islands carry 'use client', and what that buys you when the rest is RSC.",
+    "date": "May 2026",
+    "readTime": "6 min read",
+    "link": "https://github.com/beckinfonet/portfolio-web"
+  }
+]

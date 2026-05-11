@@ -42,9 +42,12 @@ export type AppDto = {
   summary?: string;
 };
 
+// Mirror of portfolio-web/lib/types.ts Writing (paired-commit / D-19).
 export type PostDto = {
   title: string;
   slug: string;
   excerpt: string;
-  publishedAt: string;
+  date: string;       // "April 2026" — uppercased on render
+  readTime: string;   // "5 min read"
+  link: string;       // https URL to full post
 };

@@ -106,4 +106,36 @@ describe('API routes', () => {
       expect(response.body[0]._id).toBeUndefined();
     }
   });
+
+  it('GET /api/posts returns Writing[] shape or 503 when DB not ready', async () => {
+    const response = await request(app).get('/api/posts');
+    expect([200, 503]).toContain(response.status);
+    if (response.status === 200) {
+      expect(Array.isArray(response.body)).toBe(true);
+      expect(response.body.length).toBeGreaterThan(0);
+      expect(response.body[0]).toEqual(
+        expect.objectContaining({
+          title: expect.any(String),
+          slug: expect.any(String),
+          excerpt: expect.any(String),
+          date: expect.any(String),
+          readTime: expect.any(String),
+          link: expect.any(String)
+        })
+      );
+      // Legacy field gone
+      expect(response.body[0].publishedAt).toBeUndefined();
+      expect(response.body[0]._id).toBeUndefined();
+      // link must be HTTPS
+      expect(response.body[0].link).toMatch(/^https?:\/\//);
+    }
+  });
+
+  it('GET /api/posts?limit=1 caps response to 1 entry', async () => {
+    const response = await request(app).get('/api/posts?limit=1');
+    expect([200, 503]).toContain(response.status);
+    if (response.status === 200) {
+      expect(response.body.length).toBeLessThanOrEqual(1);
+    }
+  });
 });

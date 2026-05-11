@@ -112,7 +112,30 @@ type Response = ShippedApp[];   // sorted by year desc
 
 ## GET /api/posts
 
-_filled by Wave 06_
+**Query params:**
+- `limit` (optional, default 3): max number of posts to return.
+
+**Response 200 — type from portfolio-web/lib/types.ts Writing[]:**
+```ts
+interface Writing {
+  title: string;
+  slug: string;
+  excerpt: string;
+  date: string;       // "April 2026" — uppercased on render
+  readTime: string;   // "5 min read"
+  link: string;       // https URL
+}
+
+type Response = Writing[];   // sorted by date desc, capped at ?limit
+```
+
+**Response 503:** `{ error: string }` — Mongo not ready or fetch failed.
+
+**Frontend cache:** `next: { revalidate: 300 }`.
+
+**Example payload:** see `src/seed/posts.json`.
+
+**Note:** Phase 6 Wave 06 renamed `publishedAt` → `date` and added `readTime`/`link`. The legacy 4 placeholder posts are replaced by the single new-shape entry; the array is intentionally short (D-15: v1 ships exactly 1 real post). Pre-existing Mongo docs in the old shape will fail the new schema's `strict: 'throw'` and must be re-seeded.
 
 ## GET /api/projects
 
