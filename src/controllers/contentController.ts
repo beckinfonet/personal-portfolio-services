@@ -4,13 +4,13 @@ import { App } from '../models/App';
 import { Experience } from '../models/Experience';
 import { Post } from '../models/Post';
 import { Profile } from '../models/Profile';
-import { Skill } from '../models/Skill';
+import { Stack } from '../models/Stack';
 import {
   placeholderApps,
   placeholderExperience,
   placeholderPosts,
   placeholderProfile,
-  placeholderSkills
+  placeholderStack
 } from '../seed/placeholders';
 
 export const getHealth = (_req: Request, res: Response): void => {
@@ -39,17 +39,24 @@ export const getProfile = async (_req: Request, res: Response): Promise<void> =>
   }
 };
 
-export const getSkills = async (_req: Request, res: Response): Promise<void> => {
+export const getStack = async (_req: Request, res: Response): Promise<void> => {
+  // Pitfall 8 / RESEARCH Open Question disposition: return 503 when Mongo isn't ready;
+  // portfolio-web/lib/api.ts:30 converts non-2xx to silent fallback (DATA-04 / D-02).
   if (mongoose.connection.readyState !== 1) {
-    res.status(200).json(placeholderSkills);
+    res.status(503).json({ error: 'service warming' });
     return;
   }
-
   try {
-    const skills = await Skill.find().lean();
-    res.status(200).json(skills.length > 0 ? skills : placeholderSkills);
+    const docs = await Stack.find().lean();
+    // Pitfall 1 / RESEARCH §Code Examples: strip Mongoose-injected fields per entry.
+    const clean = docs.map((d) => {
+      const { _id, __v, createdAt, updatedAt, ...rest } = d as Record<string, unknown>;
+      void _id; void __v; void createdAt; void updatedAt;
+      return rest;
+    });
+    res.status(200).json(clean.length > 0 ? clean : placeholderStack);
   } catch {
-    res.status(200).json(placeholderSkills);
+    res.status(503).json({ error: 'fetch failed' });
   }
 };
 

@@ -17,10 +17,10 @@ export type ProfileDto = {
   }>;
 };
 
-export type SkillDto = {
-  name: string;
+// Mirror of portfolio-web/lib/types.ts StackCategory (paired-commit / D-19).
+export type StackCategoryDto = {
   category: string;
-  level: string;
+  items: string[];
 };
 
 export type ExperienceDto = {

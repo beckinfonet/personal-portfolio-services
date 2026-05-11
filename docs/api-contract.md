@@ -45,7 +45,23 @@ interface Profile {
 
 ## GET /api/stack
 
-_filled by Wave 03_
+**Response 200 — type from portfolio-web/lib/types.ts StackCategory[]:**
+```ts
+type StackCategory = {
+  category: string;  // e.g. "languages", "frameworks", "cloud", "ai"
+  items: string[];   // e.g. ["TypeScript", "Python", "Swift"]
+};
+
+type Response = StackCategory[];
+```
+
+**Response 503:** `{ error: string }` — Mongo connection not ready or collection empty. Frontend treats as fallback trigger.
+
+**Frontend cache:** `next: { revalidate: 300 }` (5-min ISR).
+
+**Example payload:** see `src/seed/stack.json`.
+
+**Note (Phase 6 brownfield):** This endpoint replaces the legacy `/api/skills` route (renamed in same commit; old route returns 404). The legacy `skills` Mongo collection is dropped on first `npm run seed` run.
 
 ## GET /api/experience
 

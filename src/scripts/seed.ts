@@ -4,6 +4,7 @@ import { join } from 'node:path';
 import mongoose from 'mongoose';
 import { connectToDatabase } from '../config/database';
 import { Profile } from '../models/Profile';
+import { Stack } from '../models/Stack';
 
 // CommonJS module target: use __dirname (Rule-3 deviation from plan's
 // import.meta.url; tsconfig.json module=commonjs rejects import.meta).
@@ -27,14 +28,37 @@ async function seed(): Promise<void> {
   );
   console.log(`seed: profile upserted (email=${profile.email})`);
 
-  // Wave 03 inserts stack upsert + legacy `skills` drop here.
+  // Pitfall 4: drop the orphaned `skills` collection (left over from Skill → Stack rename).
+  // Code 26 = NamespaceNotFound — fine on a fresh Mongo or after first cleanup.
+  try {
+    await mongoose.connection.collection('skills').drop();
+    console.log('seed: dropped legacy `skills` collection');
+  } catch (e: unknown) {
+    const code = (e as { code?: number })?.code;
+    if (code !== 26) throw e;
+    // collection didn't exist — silent success
+  }
+
+  // Stack — array collection, upsert by `category` (unique).
+  const stack = await load<Array<{ category: string }>>('stack.json');
+  for (const entry of stack) {
+    await Stack.findOneAndUpdate(
+      { category: entry.category },
+      entry,
+      { upsert: true, new: true, setDefaultsOnInsert: true }
+    );
+  }
+  console.log(`seed: ${stack.length} stack categories upserted`);
+
   // Wave 04 inserts experience upsert here.
   // Wave 05 inserts apps upsert here.
   // Wave 06 inserts posts upsert here.
   // Wave 07 inserts projects upsert here.
 
   const profileCount = await Profile.countDocuments();
+  const stackCount = await Stack.countDocuments();
   console.log(`seed: final profile count = ${profileCount}`);
+  console.log(`seed: final stack count = ${stackCount}`);
   console.log('seed: complete');
   await mongoose.disconnect();
 }

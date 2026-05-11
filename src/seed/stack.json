@@ -1,0 +1,6 @@
+[
+  { "category": "languages",  "items": ["TypeScript", "Python", "Swift"] },
+  { "category": "frameworks", "items": ["Next.js", "React", "React Native"] },
+  { "category": "cloud",      "items": ["AWS"] },
+  { "category": "ai",         "items": ["LangChain", "agentic systems"] }
+]

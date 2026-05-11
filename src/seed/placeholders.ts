@@ -1,4 +1,4 @@
-import { AppDto, ExperienceDto, PostDto, ProfileDto, SkillDto } from '../types/content';
+import { AppDto, ExperienceDto, PostDto, ProfileDto, StackCategoryDto } from '../types/content';
 
 export const placeholderProfile: ProfileDto = {
   name: 'Bakytbek Tatibekov',
@@ -26,10 +26,11 @@ export const placeholderProfile: ProfileDto = {
   ]
 };
 
-export const placeholderSkills: SkillDto[] = [
-  { name: 'TypeScript', category: 'language', level: 'advanced' },
-  { name: 'Node.js', category: 'backend', level: 'advanced' },
-  { name: 'React', category: 'frontend', level: 'advanced' }
+export const placeholderStack: StackCategoryDto[] = [
+  { category: 'languages', items: ['TypeScript', 'Python', 'Swift'] },
+  { category: 'frameworks', items: ['Next.js', 'React', 'React Native'] },
+  { category: 'cloud', items: ['AWS'] },
+  { category: 'ai', items: ['LangChain', 'agentic systems'] }
 ];
 
 export const placeholderExperience: ExperienceDto[] = [
