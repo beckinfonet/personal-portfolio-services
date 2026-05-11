@@ -23,12 +23,12 @@ export type StackCategoryDto = {
   items: string[];
 };
 
+// Mirror of portfolio-web/lib/types.ts Experience (paired-commit / D-19).
 export type ExperienceDto = {
   company: string;
   role: string;
-  startDate: string;
-  endDate: string;
-  highlights: string[];
+  period: string;
+  summary: string;
 };
 
 export type AppDto = {

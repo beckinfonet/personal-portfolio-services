@@ -53,4 +53,24 @@ describe('API routes', () => {
       expect(response.body.__v).toBeUndefined();
     }
   });
+
+  it('GET /api/experience returns Experience[] shape or 503 when DB not ready', async () => {
+    const response = await request(app).get('/api/experience');
+    expect([200, 503]).toContain(response.status);
+    if (response.status === 200) {
+      expect(Array.isArray(response.body)).toBe(true);
+      expect(response.body.length).toBeGreaterThan(0);
+      expect(response.body[0]).toEqual(
+        expect.objectContaining({
+          company: expect.any(String),
+          role: expect.any(String),
+          period: expect.any(String),
+          summary: expect.any(String)
+        })
+      );
+      expect(response.body[0]._id).toBeUndefined();
+      expect(response.body[0].startDate).toBeUndefined();   // old shape gone
+      expect(response.body[0].highlights).toBeUndefined();  // old shape gone
+    }
+  });
 });

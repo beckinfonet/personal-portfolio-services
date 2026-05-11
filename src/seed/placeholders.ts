@@ -35,11 +35,10 @@ export const placeholderStack: StackCategoryDto[] = [
 
 export const placeholderExperience: ExperienceDto[] = [
   {
-    company: 'Acme Studio',
-    role: 'Full Stack Engineer',
-    startDate: '2022-01-01',
-    endDate: 'Present',
-    highlights: ['Led API modernization', 'Improved CI reliability']
+    company: 'Independent',
+    role: 'Sr. Software Engineer',
+    period: '2022 - present',
+    summary: 'Building developer tools and AI-assisted engineering workflows across full-stack TypeScript and infrastructure projects.'
   }
 ];
 

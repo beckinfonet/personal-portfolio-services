@@ -3,6 +3,7 @@ import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import mongoose from 'mongoose';
 import { connectToDatabase } from '../config/database';
+import { Experience } from '../models/Experience';
 import { Profile } from '../models/Profile';
 import { Stack } from '../models/Stack';
 
@@ -50,15 +51,28 @@ async function seed(): Promise<void> {
   }
   console.log(`seed: ${stack.length} stack categories upserted`);
 
-  // Wave 04 inserts experience upsert here.
+  // Experience — array collection, composite upsert key (Pitfall 3: same company,
+  // different periods is a real case — different roles at the same employer).
+  const experience = await load<Array<{ company: string; period: string }>>('experience.json');
+  for (const entry of experience) {
+    await Experience.findOneAndUpdate(
+      { company: entry.company, period: entry.period },
+      entry,
+      { upsert: true, new: true, setDefaultsOnInsert: true }
+    );
+  }
+  console.log(`seed: ${experience.length} experience entries upserted`);
+
   // Wave 05 inserts apps upsert here.
   // Wave 06 inserts posts upsert here.
   // Wave 07 inserts projects upsert here.
 
   const profileCount = await Profile.countDocuments();
   const stackCount = await Stack.countDocuments();
+  const expCount = await Experience.countDocuments();
   console.log(`seed: final profile count = ${profileCount}`);
   console.log(`seed: final stack count = ${stackCount}`);
+  console.log(`seed: final experience count = ${expCount}`);
   console.log('seed: complete');
   await mongoose.disconnect();
 }

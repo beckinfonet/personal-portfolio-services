@@ -65,7 +65,25 @@ type Response = StackCategory[];
 
 ## GET /api/experience
 
-_filled by Wave 04_
+**Response 200 — type from portfolio-web/lib/types.ts Experience[]:**
+```ts
+interface Experience {
+  company: string;
+  role: string;
+  period: string;   // "2022 - present" or "2019 - 2022"
+  summary: string;  // max ~64 chars in view rendering
+}
+
+type Response = Experience[];
+```
+
+**Response 503:** `{ error: string }` — Mongo not ready or collection empty.
+
+**Frontend cache:** `next: { revalidate: 300 }`.
+
+**Example payload:** see `src/seed/experience.json`.
+
+**Note:** This endpoint dropped the legacy `startDate`/`endDate`/`highlights[]` fields in Phase 6 Wave 04 (paired commit). Documents authored under the old shape will fail the new schema's `strict: 'throw'` and must be re-seeded.
 
 ## GET /api/apps
 

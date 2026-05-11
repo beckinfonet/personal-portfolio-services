@@ -61,16 +61,23 @@ export const getStack = async (_req: Request, res: Response): Promise<void> => {
 };
 
 export const getExperience = async (_req: Request, res: Response): Promise<void> => {
+  // Pitfall 8 / RESEARCH Open Question disposition: return 503 when Mongo isn't ready;
+  // portfolio-web/lib/api.ts:30 converts non-2xx to silent fallback (DATA-04 / D-02).
   if (mongoose.connection.readyState !== 1) {
-    res.status(200).json(placeholderExperience);
+    res.status(503).json({ error: 'service warming' });
     return;
   }
-
   try {
-    const experience = await Experience.find().lean();
-    res.status(200).json(experience.length > 0 ? experience : placeholderExperience);
+    const docs = await Experience.find().lean();
+    // Pitfall 1 / RESEARCH §Code Examples: strip Mongoose-injected fields per entry.
+    const clean = docs.map((d) => {
+      const { _id, __v, createdAt, updatedAt, ...rest } = d as Record<string, unknown>;
+      void _id; void __v; void createdAt; void updatedAt;
+      return rest;
+    });
+    res.status(200).json(clean.length > 0 ? clean : placeholderExperience);
   } catch {
-    res.status(200).json(placeholderExperience);
+    res.status(503).json({ error: 'fetch failed' });
   }
 };
 
