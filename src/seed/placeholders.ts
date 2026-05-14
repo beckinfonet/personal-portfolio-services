@@ -23,7 +23,7 @@ export const placeholderProfile: ProfileDto = {
   ],
   socials: [
     { label: 'GitHub',   handle: '@beckinfonet', url: 'https://github.com/beckinfonet',     kind: 'github' },
-    { label: 'LinkedIn', handle: 'in/bakytbek',  url: 'https://linkedin.com/in/bakytbek',  kind: 'linkedin' }
+    { label: 'LinkedIn', handle: '/in/tatibekov/',  url: 'https://linkedin.com/in/tatibekov/',  kind: 'linkedin' }
   ]
 };
 
