@@ -65,9 +65,18 @@ describe('API routes', () => {
           company: expect.any(String),
           role: expect.any(String),
           period: expect.any(String),
-          summary: expect.any(String)
+          summary: expect.any(String),
+          bullets: expect.any(Array),
+          tech: expect.any(Array)
         })
       );
+      // bullets and tech are arrays of strings (empty allowed for un-reseeded prod, per spec §9).
+      for (const b of response.body[0].bullets) {
+        expect(typeof b).toBe('string');
+      }
+      for (const t of response.body[0].tech) {
+        expect(typeof t).toBe('string');
+      }
       expect(response.body[0]._id).toBeUndefined();
       expect(response.body[0].startDate).toBeUndefined();   // old shape gone
       expect(response.body[0].highlights).toBeUndefined();  // old shape gone

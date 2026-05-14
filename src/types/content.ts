@@ -30,6 +30,10 @@ export type ExperienceDto = {
   role: string;
   period: string;
   summary: string;
+  bullets: string[];           // NEW — required at TS level, [] allowed
+  tech: string[];              // NEW — required at TS level, [] allowed
+  location?: string;           // NEW optional — "Remote", "Hybrid", "Onsite — NYC"
+  employmentType?: string;     // NEW optional — "Full-time", "Contract"
 };
 
 // Mirror of portfolio-web/lib/types.ts ShippedApp (paired-commit / D-19).

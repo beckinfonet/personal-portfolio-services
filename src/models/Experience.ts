@@ -5,7 +5,11 @@ const experienceSchema = new Schema(
     company: { type: String, required: true },
     role:    { type: String, required: true },
     period:  { type: String, required: true },
-    summary: { type: String, required: true }
+    summary: { type: String, required: true },
+    bullets: { type: [String], required: true, default: [] },
+    tech:    { type: [String], required: true, default: [] },
+    location:       { type: String, required: false },
+    employmentType: { type: String, required: false }
   },
   { timestamps: true, strict: 'throw' }
 );

@@ -39,7 +39,9 @@ export const placeholderExperience: ExperienceDto[] = [
     company: 'Independent',
     role: 'Sr. Software Engineer',
     period: '2022 - present',
-    summary: 'Building developer tools and AI-assisted engineering workflows across full-stack TypeScript and infrastructure projects.'
+    summary: 'Building developer tools and AI-assisted engineering workflows across full-stack TypeScript and infrastructure projects.',
+    bullets: [],
+    tech: []
   }
 ];
 
