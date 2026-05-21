@@ -66,4 +66,5 @@ export type ProjectDto = {
   tech: string[];
   role: string;
   link: string;       // https URL
+  repoUrls?: string[]; // Phase 8 (SCHEMA-02): optional public GitHub repo URLs for v1.1 stats
 };

@@ -76,6 +76,7 @@ export const placeholderProjects: ProjectDto[] = [
     summary: 'Brownfield redesign of this site into a terminal/IDE shell with seven RSC views.',
     tech: ['Next.js', 'React', 'TypeScript'],
     role: 'lead',
-    link: 'https://github.com/beckinfonet/portfolio-web'
+    link: 'https://github.com/beckinfonet/portfolio-web',
+    repoUrls: ['https://github.com/beckinfonet/portfolio-web']
   }
 ];

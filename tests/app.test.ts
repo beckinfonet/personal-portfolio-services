@@ -167,6 +167,23 @@ describe('API routes', () => {
       );
       expect(response.body[0]._id).toBeUndefined();
       expect(response.body[0].link).toMatch(/^https?:\/\//);
+      // Phase 8 (SCHEMA-05): repoUrls is optional. Presence — at least one
+      // seeded entry carries a non-empty string[] (catches an empty-seed
+      // regression). Absence — entries may omit it, so no per-entry assertion
+      // requires it. Any present repoUrls element must be an HTTP(S) URL.
+      const withRepoUrls = response.body.filter(
+        (p: { repoUrls?: unknown }) => Array.isArray(p.repoUrls) && p.repoUrls.length > 0
+      );
+      expect(withRepoUrls.length).toBeGreaterThan(0);
+      for (const p of response.body) {
+        if (p.repoUrls !== undefined) {
+          expect(Array.isArray(p.repoUrls)).toBe(true);
+          for (const url of p.repoUrls) {
+            expect(typeof url).toBe('string');
+            expect(url).toMatch(/^https?:\/\//);
+          }
+        }
+      }
     }
   });
 });

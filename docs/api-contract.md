@@ -149,6 +149,7 @@ interface Project {
   tech: string[];
   role: string;
   link: string;       // https URL
+  repoUrls?: string[];  // optional public GitHub repo URLs for v1.1 stats
 }
 
 type Response = Project[];   // sorted by year desc
@@ -161,3 +162,5 @@ type Response = Project[];   // sorted by year desc
 **Example payload:** see `src/seed/projects.json`.
 
 **Note:** Phase 6 Wave 07 added this endpoint (BACKEND-01). New `Project` model + `getProjects` controller + route line; mirror frontend constant in portfolio-web/lib/portfolio-data.ts.
+
+**Note:** Phase 8 (SCHEMA-01..07) added the optional, additive `repoUrls?: string[]` field — public GitHub repo URLs consumed by the v1.1 GitHub-stats fetch. Optional: an entry with no public repo simply omits it.
